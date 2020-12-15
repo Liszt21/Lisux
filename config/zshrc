@@ -1,0 +1,12 @@
+export ZSH="/home/liszt/.oh-my-zsh"
+
+source $ZSH/oh-my-zsh.sh
+
+plugins=(git sudo)
+plugins+=(zsh-autosuggestions)
+plugins+=(zsh-syntax-highlighting)
+
+ZSH_THEME="typewritten"
+export TYPEWRITTEN_PROMPT_LAYOUT="multiline"
+
+source $ZSH_CUSTOM/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh

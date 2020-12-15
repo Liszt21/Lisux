@@ -1,0 +1,1 @@
+echo "Synchronizing Lisux..."

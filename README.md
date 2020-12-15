@@ -17,5 +17,5 @@ Liszt21's linux config
 - [ ] script
   - [ ] install
   - [ ] initiate
-  - [ ] synchronise
+  - [ ] synchronize
   - [ ] uninstall
