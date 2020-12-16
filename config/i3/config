@@ -33,8 +33,8 @@ smart_gaps on
 floating_modifier $win
 
 bar {
-    status_command i3blocks
-    position top
+    status_command i3blocks -c $LISUX/config/i3/blocks
+    position bottom
     # mode hide
     workspace_buttons yes
 }
