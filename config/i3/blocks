@@ -13,15 +13,10 @@ command=echo "Hello, $USER!"
 interval=once
 
 [weather]
-#command=curl -Ss 'https://wttr.in?0&T&Q' | cut -c 16- | head -2 | xargs echo
-command=curl wttr.in/\?format\="%l:+%c%20%C%20%t%20%f%20%w%20%m%20%h"
+# command=curl -Ss 'https://wttr.in?0&T&Q' | cut -c 16- | head -2 | xargs echo
+command=curl -Ss wttr.in/\?format\="%l:+%c%20%C%20%t%20%f%20%w%20%h" | xargs echo
 interval=621
 color=#A4C2F4
-
-[ip]
-command=hostname -i | awk '{ print "IP:" $1 }'
-interval=once
-color=#91E78B
 
 [time]
 command=date '+%Y-%m-%d %H:%M:%S'
@@ -36,11 +31,5 @@ command=wget -qO - icanhazip.com
 interval=once
 
 [battery]
-command=$LISUX/config/i3/battery.sh
+command=~/Lisux/config/i3/battery.sh
 interval=10
-
-[counter]
-_count=0
-command=printf '{"full_text":"Counter: %s", "_count":%d}\n' $_count $((_count + 1))
-format=json
-interval=1
