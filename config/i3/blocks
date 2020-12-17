@@ -13,8 +13,9 @@ command=echo "Hello, $USER!"
 interval=once
 
 [weather]
-command=curl -Ss 'https://wttr.in?0&T&Q' | cut -c 16- | head -2 | xargs echo
-interval=3600
+#command=curl -Ss 'https://wttr.in?0&T&Q' | cut -c 16- | head -2 | xargs echo
+command=curl wttr.in/\?format\="%l:+%c%20%C%20%t%20%f%20%w%20%m%20%h"
+interval=621
 color=#A4C2F4
 
 [ip]
