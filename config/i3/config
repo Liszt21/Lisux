@@ -88,5 +88,33 @@ bindsym $win+Shift+Right move right
 
 bindsym $win+space floating toggle
 
+bindsym $win+t split h
+bindsym $win+v split v
+
+bindsym $alt+Tab workspace next
+bindsym $alt+Shift+Tab workspace prev
+
+mode "resize" {
+        # These bindings trigger as soon as you enter the resize mode
+        bindsym h resize shrink width 6 px or 6 ppt
+        bindsym l resize grow width 6 px or 6 ppt
+        bindsym k resize grow height 6 px or 6 ppt
+        bindsym j resize shrink height 6 px or 6 ppt
+
+        # same bindings, but for the arrow keys
+        bindsym Left resize shrink width 10 px or 10 ppt
+        bindsym Down resize grow height 10 px or 10 ppt
+        bindsym Up resize shrink height 10 px or 10 ppt
+        bindsym Right resize grow width 10 px or 10 ppt
+
+        # back to normal: Enter or Escape or $mod+r
+        bindsym Return mode "default"
+        bindsym Escape mode "default"
+        bindsym $win+r mode "default"
+}
+
+bindsym $win+r mode "resize"
+
 exec fcitx
-exec --no-startup-id compton -b
+exec_always --no-startup-id feh --randomize --bg-fill ~/Pictures/*
+exec_always --no-startup-id picom
