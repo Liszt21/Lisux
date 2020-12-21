@@ -1,1 +1,1 @@
-echo "Installing Lisux"
+echo "Installing Lisux..."

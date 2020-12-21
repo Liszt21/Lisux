@@ -19,3 +19,6 @@ Liszt21's linux config
   - [ ] initiate
   - [ ] synchronize
   - [ ] uninstall
+
+## Reference
+- Derek Taylor (DistroTube) : [GitLab](http://www.gitlab.com/dwt1/)
