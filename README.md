@@ -15,10 +15,18 @@ Liszt21's linux config
   - [ ] nvm
   - [ ] zsh
 - [ ] script
-  - [ ] install
-  - [ ] initiate
-  - [ ] synchronize
-  - [ ] uninstall
+  - [ ] installer
+    - [ ] lisux
+    - [ ] pyenv
+    - [ ] nvm
+    - [ ] ohmyzsh
+    - [ ] lemacs
 
 ## Reference
 - Derek Taylor (DistroTube) : [GitLab](http://www.gitlab.com/dwt1/)
+
+## Install
+
+``` sh
+curl -L https://raw.githubusercontent.com/Liszt21/Lisux/master/script/installer/lisux | bash
+```
