@@ -30,6 +30,7 @@ function install() {
         echo "  - add archlinuxcn server to pacman"
         printf "[archlinuxcn]\nServer = https://mirrors.163.com/archlinux-cn/\$arch" | sudo tee -a /etc/pacman.conf
         sudo pacman -Sy
+        sudo pacman -S archlinuxcn-keyring
     }
 
     install_if_miss yay
