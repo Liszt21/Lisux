@@ -28,7 +28,7 @@ function install() {
 
     in_file "archlinuxcn" /etc/pacman.conf || {
         echo "  - add archlinuxcn server to pacman"
-        printf "[archlinuxcn]\nServer = https://mirrors.aliyun.com/archlinuxcn/\$arch" | sudo tee -a /etc/pacman.conf
+        printf "[archlinuxcn]\nServer = https://mirrors.163.com/archlinux-cn/\$arch" | sudo tee -a /etc/pacman.conf
         sudo pacman -Sy
     }
 
