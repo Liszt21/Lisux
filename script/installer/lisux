@@ -1,6 +1,9 @@
 #!/usr/bin/env bash
 
-
+# TODO: add wsl support
+# TODO: separate install function by distrobution
+# TODO: support debug mode
+# TODO: finish basic installition
 LISUX=${LISUX:-~/.lisux}
 
 function command_exists() {
