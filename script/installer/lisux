@@ -52,9 +52,9 @@ function install() {
 
     cd "$LISUX" || return
 
-    in_file "lisux/init" ~/.profile || {
-        echo "  - push init file to ~/.profile"
-        echo "source $LISUX/init" >> ~/.profile
+    in_file "lisux/init" ~/.bash_profile || {
+        echo "  - push init file to ~/.bash_profile"
+        echo "source $LISUX/init" >> ~/.bash_profile
     }
 }
 
