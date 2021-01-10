@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+
+LISUX=${LISUX:-~/.lisux}
+export LISUX_APP=$LISUX/apps
+export PATH="$LISUX/bin:$PATH"

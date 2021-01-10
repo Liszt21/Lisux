@@ -1,0 +1,66 @@
+#!/usr/bin/env bash
+
+
+LISUX=${LISUX:-~/.lisux}
+
+function command_exists() {
+	command -v "$@" >/dev/null 2>&1
+}
+
+function in_file() {
+    grep "$1" < "$2" >/dev/null 2>&1
+}
+
+function check() {
+    echo "Lisux home : $LISUX"
+}
+
+function install_if_miss() {
+    if command_exists "$1";then
+        echo "  - $1 was installed..."
+    else
+        pacman -S "$1"
+    fi
+}
+
+function install() {
+    echo "Installing"
+
+    in_file "archlinuxcn" /etc/pacman.conf || {
+        echo "  - add archlinuxcn server to pacman"
+        printf "[archlinuxcn]\nServer = https://repo.archlinuxcn.org/\$arch" | sudo tee -a /etc/pacman.conf
+        sudo pacman -Sy
+    }
+
+    install_if_miss yay
+    install_if_miss git
+    install_if_miss vim
+    install_if_miss emacs
+    install_if_miss curl
+    install_if_miss wget
+    install_if_miss zsh
+
+    if [ -d "$LISUX" ];then
+        echo "Lisux is already installed..."
+        $DEBUG || {
+            exit
+        }
+    else
+        git clone https://github.com/Liszt21/Lisux "$LISUX"
+    fi
+
+    cd "$LISUX" || return
+
+    in_file "lisux/init" ~/.profile || {
+        echo "  - push init file to ~/.profile"
+        echo "source $LISUX/init" >> ~/.profile
+    }
+}
+
+function main() {
+    echo "Installing Lisux..."
+    check
+    install
+}
+
+main

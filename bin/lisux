@@ -1,0 +1,14 @@
+#!/usr/bin/env python
+
+
+try:
+    import os
+except ImportError:
+    from pip._internal.main import main as pip
+
+    pip(["install", "-r", "../config/requirements.txt"])
+
+
+if __name__ == "__main__":
+    os.system("echo in python")
+    os.system("yay")
