@@ -1,7 +1,6 @@
 #!/usr/bin/env bash
 
 # TODO: add wsl support
-# TODO: separate install function by distrobution
 # TODO: support debug mode
 # TODO: finish basic installition
 LISUX=${LISUX:-~/.lisux}
@@ -14,57 +13,52 @@ function in_file() {
     grep "$1" < "$2" >/dev/null 2>&1
 }
 
-function check() {
-    echo "Lisux home : $LISUX"
-}
-
-function install_if_miss() {
-    if command_exists "$1";then
-        echo "  - $1 was installed..."
-    else
-        pacman -S "$1"
-    fi
-}
-
-function install() {
-    echo "Installing"
-
+function 4pacman() {
     in_file "archlinuxcn" /etc/pacman.conf || {
-        echo "  - add archlinuxcn server to pacman"
+        echo "  - add archlinuxcn server"
         printf "[archlinuxcn]\nServer = https://mirrors.163.com/archlinux-cn/\$arch" | sudo tee -a /etc/pacman.conf
         sudo pacman -Sy
-        sudo pacman -S archlinuxcn-keyring
+        sudo pacman -S archlinuxcn-keyring --noconfirm
     }
 
-    install_if_miss yay
-    install_if_miss git
-    install_if_miss vim
-    install_if_miss emacs
-    install_if_miss curl
-    install_if_miss wget
-    install_if_miss zsh
+    sudo pacman -S yay git vim emacs curl wget zsh base-devel --needed
+}
 
-    if [ -d "$LISUX" ];then
-        echo "Lisux is already installed..."
-        $DEBUG || {
-            exit
-        }
-    else
-        git clone https://github.com/Liszt21/Lisux "$LISUX"
-    fi
+function 4yum() {
+    # TODO finish yum
+    echo "yum"
+}
 
-    cd "$LISUX" || return
+function 4apt() {
+    # TODO finish apt
+    echo "apt"
+}
 
-    in_file "lisux/init" ~/.bash_profile || {
-        echo "  - push init file to ~/.bash_profile"
-        echo "source $LISUX/init" >> ~/.bash_profile
+# main process
+
+DISTROBUTION_NAME=$(grep < /etc/os-release -e "^NAME=*" | cut -f 2 -d "\"")
+echo "Hello $USER, Lisux is running in $DISTROBUTION_NAME"
+
+command_exists yum && 4yum
+command_exists pacman && 4pacman
+command_exists apt && 4apt
+
+[ "$WSL_DISTRO_NAME" ] && {
+    echo "In wsl"
+    [ "$USER" = "liszt" ] && [ -d "/mnt/c/Liszt/Projects/Lisux" ] && {
+        echo "Is me"
+        ln -s /mnt/c/Liszt/Projects/Lisux ~/.lisux
     }
 }
 
-function main() {
-    echo "Installing Lisux..."
-    check
-    install
+if [ -d "$LISUX" ];then
+    echo "Lisux is already installed..."
+else
+    git clone https://github.com/Liszt21/Lisux "$LISUX"
+fi
+
+in_file "lisux/init" ~/.bash_profile || {
+    echo "  - push init file to ~/.bash_profile"
+    echo "source $LISUX/init" >> ~/.bash_profile
 }
 
-main
