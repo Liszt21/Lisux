@@ -1,12 +1,17 @@
 #!/usr/bin/env bash
 #
-
-if [ -z "$LISUX" ];then
-    echo "has lisux"
-    PYENV_HOME="$LISUX/apps/pyenv"
+#
+if [ "$PYENV_HOME" ];then
+    INSTALLED=true
 else
-    echo "doesn't has lisux"
-    PYENV_HOME="~/.pyenv"
+    INSTALLED=false
+    if [ "$LISUX" ];then
+        echo "has lisux"
+        PYENV_HOME="$LISUX/apps/pyenv"
+    else
+        echo "doesn't has lisux"
+        PYENV_HOME="$HOME/.pyenv"
+    fi
 fi
 
 echo "$PYENV_HOME"
@@ -22,6 +27,10 @@ checkout() {
 }
 
 function install() {
+    [ "$INSTALLED" ] && {
+        echo "Pyenv was installed...exit"
+        exit
+    }
     printf "Installing pyenv..."
     printf "  - cloning pyenv"
     checkout https://github.com/pyenv/pyenv.git "$PYENV_HOME"
