@@ -57,8 +57,14 @@ else
     git clone https://github.com/Liszt21/Lisux "$LISUX"
 fi
 
-in_file "lisux/init" ~/.bash_profile || {
-    echo "  - push init file to ~/.bash_profile"
-    echo "source $LISUX/init" >> ~/.bash_profile
+# Setting environment
+RC_FILE="$HOME/.bashrc"
+[ -f ~/.zshrc ] && {
+    RC_FILE="$HOME/.zshrc"
+}
+
+in_file "lisux/init" "$RC_FILE" || {
+    echo "  - push init file to $RC_FILE"
+    echo "source $LISUX/init" >> "$RC_FILE"
 }
 
