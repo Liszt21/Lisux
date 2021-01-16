@@ -21,21 +21,18 @@ function 4pacman() {
         sudo pacman -S archlinuxcn-keyring --noconfirm
     }
 
-    sudo pacman -S yay git vim emacs curl wget zsh base-devel --needed
+    sudo pacman -S yay git vim emacs curl wget zsh base-devel python-pip neofetch --needed
 }
 
 function 4yum() {
-    # TODO finish yum
-    echo "yum"
+    sudo yum install git vim emacs curl wget zsh python-pip neofetch
 }
 
 function 4apt() {
-    # TODO finish apt
-    echo "apt"
+    sudo apt-get install git vim emacs curl wget zsh python-pip neofetch
 }
 
 # main process
-
 DISTROBUTION_NAME=$(grep < /etc/os-release -e "^NAME=*" | cut -f 2 -d "\"")
 echo "Hello $USER, Lisux is running in $DISTROBUTION_NAME"
 
@@ -55,6 +52,7 @@ if [ -d "$LISUX" ];then
     echo "Lisux is already installed..."
 else
     git clone https://github.com/Liszt21/Lisux "$LISUX"
+    find "$LISUX/bin" -not -name "*.bash" -exec chmod o+x {} \;
 fi
 
 # Setting environment
