@@ -2,15 +2,48 @@
 
 
 import os
+from pathlib import Path
 
 try:
-    import wakatime
+    import click
 except ImportError:
     from pip._internal.main import main as pip
 
-    pip(["install", "-r", "../config/requirements.txt"])
+    pip(["install", "-r", "$LISUX/config/requirements.txt"])
 
+root = Path(__file__).parent.parent
+installers = [
+    i.name for i in (root / "script" / "installer").glob("*") if not i.name == "lisux"
+]
+
+
+@click.group()
+def lisux(action, required=False):
+    print(action)
+    print("default")
+
+
+@click.command()
+@click.argument("app", required=False)
+def install(app=None):
+    print("Available:\n  " + "\n  ".join(installers))
+    if not app in installers:
+        if app == "*":
+            print("install all apps")
+
+
+@click.command()
+@click.argument("app", required=False)
+def uninstall(app=None):
+    print("Available:\n  " + "\n  ".join(installers))
+    if not app in installers:
+        if app == "*":
+            print("install all apps")
+
+
+lisux.add_command(install)
+lisux.add_command(uninstall)
 
 if __name__ == "__main__":
-    os.system("cd $LISUX && echo update lisux && git pull --ff-only && cd $OLDPWD")
-    os.system("yay")
+    lisux()
+    # os.system("cd $LISUX && echo update lisux && git pull --ff-only && cd $OLDPWD")
