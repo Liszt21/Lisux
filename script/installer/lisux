@@ -32,37 +32,89 @@ function 4apt() {
     sudo apt-get install git vim emacs curl wget zsh python-pip neofetch
 }
 
-# main process
-DISTROBUTION_NAME=$(grep < /etc/os-release -e "^NAME=*" | cut -f 2 -d "\"")
-echo "Hello $USER, Lisux is running in $DISTROBUTION_NAME"
+function y-or-n-p() {
+    # $1 message
+    # $2 default
+    prompt="[Y/n]"
+    $2 || {
+        prompt="[y/N]"
+    }
+    $DEBUG && {
+        echo "In function y-or-n-p(1: $1, 2: $2, prompt $prompt)"
+    }
+    if read -r -n1 -t 9 -p "$1 $prompt?" answer;then
+        case $answer in
+        Y | y)
+            return 0;;
+        N | n)
+            return 1;;
+        *)
+            echo "Wrong answer: $answer, return default: %2"
+            $2 && {
+                return 0
+            }
+            return 1;;
+        esac
+    else
+        echo "Timeout, return default: $2"
+        $2 && {
+            return 0
+        }
+        return 1
+    fi
+}
 
-command_exists yum && 4yum
-command_exists pacman && 4pacman
-command_exists apt && 4apt
+function install() {
+    DISTROBUTION_NAME=$(grep < /etc/os-release -e "^NAME=*" | cut -f 2 -d "\"")
+    echo "Hello $USER, Lisux is running in $DISTROBUTION_NAME"
 
-[ "$WSL_DISTRO_NAME" ] && {
-    echo "In wsl"
-    [ "$USER" = "liszt" ] && [ -d "/mnt/c/Liszt/Projects/Lisux" ] && {
-        echo "Is me"
-        ln -s /mnt/c/Liszt/Projects/Lisux ~/.lisux
+    command_exists yum && 4yum
+    command_exists pacman && 4pacman
+    command_exists apt && 4apt
+
+    [ "$WSL_DISTRO_NAME" ] && {
+        echo "In wsl"
+        [ "$USER" = "liszt" ] && [ ! -e "/mnt/c/Liszt/Projects/Lisux" ] && {
+            echo "Is me"
+            ln -s /mnt/c/Liszt/Projects/Lisux ~/.lisux
+        }
+    }
+
+    if [ -e "$LISUX" ];then
+        echo "Lisux is already installed..."
+    else
+        git clone https://github.com/Liszt21/Lisux "$LISUX"
+        find "$LISUX/bin" -type f -exec chmod o+x {} \;
+        find "$LISUX/script" -type f ! -name "*.*" -exec chmod o+x {} \;
+    fi
+
+    # Setting environment
+    RC_FILE="$HOME/.bashrc"
+    [ -f ~/.zshrc ] && {
+        RC_FILE="$HOME/.zshrc"
+    }
+
+    in_file "lisux/init" "$RC_FILE" || {
+        echo "  - push init file to $RC_FILE"
+        echo "source $LISUX/init" >> "$RC_FILE"
     }
 }
 
-if [ -d "$LISUX" ];then
-    echo "Lisux is already installed..."
+function uninstall() {
+    echo "Uninstall lisux"
+    # TODO finish uninstall
+}
+
+if [ "$DEBUG" ];then
+    echo "Debug mode"
+    echo "$@"
+    if y-or-n-p "test";then
+        echo "typed y"
+    else
+        echo "typed n"
+    fi
+elif [ "$1" == "uninstall" ];then
+    uninstall
 else
-    git clone https://github.com/Liszt21/Lisux "$LISUX"
-    find "$LISUX/bin" -not -name "*.bash" -exec chmod o+x {} \;
+    install
 fi
-
-# Setting environment
-RC_FILE="$HOME/.bashrc"
-[ -f ~/.zshrc ] && {
-    RC_FILE="$HOME/.zshrc"
-}
-
-in_file "lisux/init" "$RC_FILE" || {
-    echo "  - push init file to $RC_FILE"
-    echo "source $LISUX/init" >> "$RC_FILE"
-}
-
