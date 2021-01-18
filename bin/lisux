@@ -5,45 +5,48 @@ import os
 from pathlib import Path
 
 try:
-    import click
+    import fire
 except ImportError:
     from pip._internal.main import main as pip
 
-    pip(["install", "-r", "$LISUX/config/requirements.txt"])
-
-root = Path(__file__).parent.parent
-installers = [
-    i.name for i in (root / "script" / "installer").glob("*") if not i.name == "lisux"
-]
+    pip(["install", "fire"])
 
 
-@click.group()
-def lisux(action, required=False):
-    print(action)
-    print("default")
+class Lisux:
+    def __init__(self):
+        self._root = Path(__file__).parent.parent
+        self._apps = [
+            i.name
+            for i in (self._root / "script" / "installer").glob("*")
+            if not i.name == "lisux"
+        ]
 
+    def install(self, app):
+        if app in self._apps or app == "lisux":
+            app = [app]
+        elif app == "all":
+            app = self._apps
+        else:
+            app = []
+        for a in app:
+            os.system("bash {} install".format(self._root / "script" / "installer" / a))
 
-@click.command()
-@click.argument("app", required=False)
-def install(app=None):
-    print("Available:\n  " + "\n  ".join(installers))
-    if not app in installers:
-        if app == "*":
-            print("install all apps")
+    def uninstall(self, app):
+        if app in self._apps or app == "lisux":
+            app = [app]
+        elif app == "all":
+            app = self._apps
+        else:
+            app = []
+        for a in app:
+            os.system(
+                "bash {} uninstall".format(self._root / "script" / "installer" / a)
+            )
 
+    def update(self):
+        os.system("cd $LISUX && echo update lisux && git pull --ff-only && cd $OLDPWD")
+        os.system("yay")
 
-@click.command()
-@click.argument("app", required=False)
-def uninstall(app=None):
-    print("Available:\n  " + "\n  ".join(installers))
-    if not app in installers:
-        if app == "*":
-            print("install all apps")
-
-
-lisux.add_command(install)
-lisux.add_command(uninstall)
 
 if __name__ == "__main__":
-    lisux()
-    # os.system("cd $LISUX && echo update lisux && git pull --ff-only && cd $OLDPWD")
+    fire.Fire(Lisux)
