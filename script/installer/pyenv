@@ -2,6 +2,7 @@
 #
 #
 if [ "$PYENV_HOME" ];then
+    echo "$PYENV_HOME"
     INSTALLED=true
 else
     INSTALLED=false
@@ -14,8 +15,8 @@ else
     fi
 fi
 
+echo "$INSTALLED"
 echo "$PYENV_HOME"
-
 
 function failed_checkout() {
     echo "Failed to git clone $1"
@@ -27,7 +28,7 @@ checkout() {
 }
 
 function install() {
-    [ "$INSTALLED" ] && {
+    "$INSTALLED" && {
         echo "Pyenv was installed...exit"
         exit
     }
