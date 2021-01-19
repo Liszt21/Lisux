@@ -11,3 +11,15 @@ export PATH="$LISUX/bin:$PATH"
         eval "$(pyenv init -)"
     fi
 }
+
+[ -d "$LISUX/apps/lemacs" ] && {
+    export LEMACS_HOME="$LISUX/apps/lemacs"
+    export PATH="$LEMACS_HOME/bin:$PATH"
+}
+
+[ "$WSL_DISTRO_NAME" ] && {
+    WIN_HOST=$(ip route | awk '{print $3; exit}')
+    export WIN_HOST=$WIN_HOST
+    export LIBGL_ALWAYS_INDIRECT=1
+    export DISPLAY=$WIN_HOST:0
+}

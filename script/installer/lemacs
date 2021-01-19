@@ -1,0 +1,47 @@
+#!/usr/bin/env bash
+#
+#
+if [ "$LEMACE_HOME" ];then
+    INSTALLED=true
+else
+    INSTALLED=false
+    if [ "$LISUX" ];then
+        LEMACE_HOME="$LISUX/apps/lemacs"
+    else
+        echo "doesn't has lisux"
+        LEMACE_HOME="$HOME/.lemacs"
+    fi
+fi
+
+function failed_checkout() {
+    echo "Failed to git clone $1"
+    exit
+}
+
+checkout() {
+    [ -d "$2" ] || git clone --depth 1 "$1" "$2" || failed_checkout "$1"
+}
+
+function install() {
+    "$INSTALLED" && {
+        echo "Lemacs was installed...exit"
+        exit
+    }
+    printf "Installing lemacs..."
+    printf "  - cloning lemacs"
+    checkout https://github.com/Liszt21/Lemacs.git "$LEMACE_HOME"
+}
+
+function uninstall() {
+    printf "Uninstalling lemacs..."
+    rm -rf "$LEMACE_HOME"
+}
+
+case "$1" in
+    [u/U]ninstall )
+        uninstall
+        ;;
+    * )
+        install
+        ;;
+esac
