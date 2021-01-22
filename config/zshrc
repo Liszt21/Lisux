@@ -1,4 +1,4 @@
-export ZSH="/home/liszt/Lisux/apps/ohmyzsh"
+export ZSH="$HOME/.lisux/apps/ohmyzsh"
 
 ZSH_THEME="typewritten"
 
@@ -12,3 +12,5 @@ export TYPEWRITTEN_PROMPT_LAYOUT="multiline"
 
 source $ZSH_CUSTOM/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
+
+source "$HOME/.lisux/init"

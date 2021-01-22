@@ -1,22 +1,17 @@
 #!/usr/bin/env bash
 #
-
-if [ "$PYENV_ROOT" ];then
-    echo "$PYENV_ROOT"
+#
+if [ "$LEMACE_HOME" ];then
     INSTALLED=true
 else
     INSTALLED=false
     if [ "$LISUX" ];then
-        echo "has lisux"
-        PYENV_ROOT="$LISUX/apps/pyenv"
+        LEMACE_HOME="$LISUX/apps/lemacs"
     else
         echo "doesn't has lisux"
-        PYENV_ROOT="$HOME/.pyenv"
+        LEMACE_HOME="$HOME/.lemacs"
     fi
 fi
-
-echo "$INSTALLED"
-echo "$PYENV_ROOT"
 
 function failed_checkout() {
     echo "Failed to git clone $1"
@@ -29,17 +24,20 @@ checkout() {
 
 function install() {
     "$INSTALLED" && {
-        echo "Pyenv was installed...exit"
+        echo "Lemacs was installed...exit"
         exit
     }
-    printf "Installing pyenv..."
-    printf "  - cloning pyenv"
-    checkout https://github.com/pyenv/pyenv.git "$PYENV_ROOT"
+    printf "Installing lemacs..."
+    printf "  - cloning lemacs"
+    checkout https://github.com/Liszt21/Lemacs.git "$LEMACE_HOME"
+    cd "$LEMACS_HOME"
+    git submodule update --init
+    cd $OLDPWD
 }
 
 function uninstall() {
-    printf "Uninstalling pyenv..."
-    rm -rf "$PYENV_ROOT"
+    printf "Uninstalling lemacs..."
+    rm -rf "$LEMACE_HOME"
 }
 
 case "$1" in
@@ -49,5 +47,6 @@ case "$1" in
     * )
         install
         source "$LISUX/init"
+        lemacs install
         ;;
 esac

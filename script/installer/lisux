@@ -117,4 +117,5 @@ elif [ "$1" == "uninstall" ];then
     uninstall
 else
     install
+    source "$LISUX/init"
 fi
