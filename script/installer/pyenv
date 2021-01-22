@@ -1,22 +1,22 @@
 #!/usr/bin/env bash
 #
-#
-if [ "$PYENV_HOME" ];then
-    echo "$PYENV_HOME"
+
+if [ "$PYENV_ROOT" ];then
+    echo "$PYENV_ROOT"
     INSTALLED=true
 else
     INSTALLED=false
     if [ "$LISUX" ];then
         echo "has lisux"
-        PYENV_HOME="$LISUX/apps/pyenv"
+        PYENV_ROOT="$LISUX/apps/pyenv"
     else
         echo "doesn't has lisux"
-        PYENV_HOME="$HOME/.pyenv"
+        PYENV_ROOT="$HOME/.pyenv"
     fi
 fi
 
 echo "$INSTALLED"
-echo "$PYENV_HOME"
+echo "$PYENV_ROOT"
 
 function failed_checkout() {
     echo "Failed to git clone $1"
@@ -34,12 +34,12 @@ function install() {
     }
     printf "Installing pyenv..."
     printf "  - cloning pyenv"
-    checkout https://github.com/pyenv/pyenv.git "$PYENV_HOME"
+    checkout https://github.com/pyenv/pyenv.git "$PYENV_ROOT"
 }
 
 function uninstall() {
     printf "Uninstalling pyenv..."
-    rm -rf "$PYENV_HOME"
+    rm -rf "$PYENV_ROOT"
 }
 
 case "$1" in
@@ -48,5 +48,6 @@ case "$1" in
         ;;
     * )
         install
+        source "$LISUX/init"
         ;;
 esac

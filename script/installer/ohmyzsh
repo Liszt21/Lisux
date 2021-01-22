@@ -1,0 +1,48 @@
+#!/usr/bin/env bash
+#
+
+if [ "$ZSH" ];then
+    echo "$ZSH"
+    INSTALLED=true
+else
+    INSTALLED=false
+    if [ "$LISUX" ];then
+        ZSH="$LISUX/apps/ohmyzsh"
+    else
+        ZSH="$HOME/.ohmyzsh"
+    fi
+fi
+
+function install() {
+    "$INSTALLED" && {
+        echo "Ohmyzsh was installed...exit"
+        exit
+    }
+    export RUNZSH=no
+    sh -c "$(curl -fsSL https://gitee.com/mirrors/oh-my-zsh/raw/master/tools/install.sh)"
+    ZSH_CUSTOM="$ZSH/custom"
+    # Add Themes : typewritten
+    git clone https://github.com/reobin/typewritten.git $ZSH_CUSTOM/themes/typewritten
+    ln -s "$ZSH_CUSTOM/themes/typewritten/typewritten.zsh-theme" "$ZSH_CUSTOM/themes/typewritten.zsh-theme"
+
+    # Add Plugins : zsh-autosuggestions zsh-syntax-highlighting
+    git clone https://github.com/zsh-users/zsh-autosuggestions $ZSH_CUSTOM/plugins/zsh-autosuggestions
+    git clone https://github.com/zsh-users/zsh-syntax-highlighting.git $ZSH_CUSTOM/plugins/zsh-syntax-highlighting
+
+    ln -s "$LISUX/config/zshrc" "$HOME/.zshrc"
+}
+
+function uninstall() {
+    printf "Uninstalling ohmyzsh..."
+    rm -rf "$ZSH"
+}
+
+case "$1" in
+    [u/U]ninstall )
+        uninstall
+        ;;
+    * )
+        install
+        source "$LISUX/init"
+        ;;
+esac

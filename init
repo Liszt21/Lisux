@@ -17,6 +17,12 @@ export PATH="$LISUX/bin:$PATH"
     export PATH="$LEMACS_HOME/bin:$PATH"
 }
 
+[ -d "$LISUX/apps/nvm" ] && {
+    export NVM_DIR=/home/liszt/Apps/nvm
+    [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+    [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
+}
+
 [ "$WSL_DISTRO_NAME" ] && {
     WIN_HOST=$(ip route | awk '{print $3; exit}')
     export WIN_HOST=$WIN_HOST

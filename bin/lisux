@@ -10,6 +10,7 @@ except ImportError:
     from pip._internal.main import main as pip
 
     pip(["install", "fire"])
+    import fire
 
 
 class Lisux:

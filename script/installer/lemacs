@@ -30,6 +30,9 @@ function install() {
     printf "Installing lemacs..."
     printf "  - cloning lemacs"
     checkout https://github.com/Liszt21/Lemacs.git "$LEMACE_HOME"
+    cd "$LEMACS_HOME"
+    git submodule update --init
+    cd $OLDPWD
 }
 
 function uninstall() {
@@ -43,5 +46,7 @@ case "$1" in
         ;;
     * )
         install
+        source "$LISUX/init"
+        lemacs install
         ;;
 esac
