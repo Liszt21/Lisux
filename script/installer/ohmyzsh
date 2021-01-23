@@ -1,24 +1,16 @@
 #!/usr/bin/env bash
-#
 
-if [ "$ZSH" ];then
-    echo "$ZSH"
-    INSTALLED=true
-else
-    INSTALLED=false
-    if [ "$LISUX" ];then
-        ZSH="$LISUX/apps/ohmyzsh"
-    else
-        ZSH="$HOME/.ohmyzsh"
-    fi
-fi
+[ ! $LISUX ] && {
+    echo "Can't find LISUX"
+    exit
+}
+
+source $LISUX/script/utils
+
+export ZSH="$LISUX/apps/ohmyzsh"
+export RUNZSH=no
 
 function install() {
-    "$INSTALLED" && {
-        echo "Ohmyzsh was installed...exit"
-        exit
-    }
-    export RUNZSH=no
     sh -c "$(curl -fsSL https://gitee.com/mirrors/oh-my-zsh/raw/master/tools/install.sh)"
     ZSH_CUSTOM="$ZSH/custom"
     # Add Themes : typewritten
@@ -29,12 +21,20 @@ function install() {
     git clone https://github.com/zsh-users/zsh-autosuggestions $ZSH_CUSTOM/plugins/zsh-autosuggestions
     git clone https://github.com/zsh-users/zsh-syntax-highlighting.git $ZSH_CUSTOM/plugins/zsh-syntax-highlighting
 
-    ln -s "$LISUX/config/zshrc" "$HOME/.zshrc"
+    [ -f "$HOME/.zshrc" ] && {
+        [ -f "$HOME/.zshrc.bak" ] && {
+            rm $HOME/.zshrc.bak
+        }
+        mv $HOME/.zshrc $HOME/.zshrc.bak
+    }
+    # ln -s "$LISUX/config/zshrc" "$HOME/.zshrc"
+    echo "source $LISUX/init" >> $HOME/.zshrc
 }
 
 function uninstall() {
-    printf "Uninstalling ohmyzsh..."
-    rm -rf "$ZSH"
+    y-or-n-p "Uninstalling ohmyzsh..." && {
+        rm -rf "$ZSH"
+    }
 }
 
 case "$1" in

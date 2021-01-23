@@ -1,22 +1,13 @@
 #!/usr/bin/env bash
-#
 
-if [ "$PYENV_ROOT" ];then
-    echo "$PYENV_ROOT"
-    INSTALLED=true
-else
-    INSTALLED=false
-    if [ "$LISUX" ];then
-        echo "has lisux"
-        PYENV_ROOT="$LISUX/apps/pyenv"
-    else
-        echo "doesn't has lisux"
-        PYENV_ROOT="$HOME/.pyenv"
-    fi
-fi
+[ ! $LISUX ] && {
+    echo "Lisux isn't installed"
+    exit
+}
 
-echo "$INSTALLED"
-echo "$PYENV_ROOT"
+source $LISUX/script/utils
+
+export PYENV_ROOT="$LISUX/apps/pyenv"
 
 function failed_checkout() {
     echo "Failed to git clone $1"
@@ -28,9 +19,9 @@ checkout() {
 }
 
 function install() {
-    "$INSTALLED" && {
-        echo "Pyenv was installed...exit"
-        exit
+    [ -d $PYENV_ROOT ] && {
+        echo "Pyenv is already installed..."
+        return
     }
     printf "Installing pyenv..."
     printf "  - cloning pyenv"

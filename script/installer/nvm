@@ -1,24 +1,16 @@
 #!/usr/bin/env bash
-#
 
-if [ "$NVM_DIR" ];then
-    echo "$NVM_DIR"
-    INSTALLED=true
-else
-    INSTALLED=false
-    if [ "$LISUX" ];then
-        echo "has lisux"
-        NVM_DIR="$LISUX/apps/nvm"
-    else
-        echo "doesn't has lisux"
-        NVM_DIR="$HOME/.nvm"
-    fi
-fi
+[ ! $LISUX ] && {
+    echo "Lisux isn't installed, exit..."
+    exit
+}
+
+export NVM_DIR=$LISUX/apps/nvm
 
 function install() {
-    "$INSTALLED" && {
-        echo "Pyenv was installed...exit"
-        exit
+    [ -d $NVM_DIR ] && {
+        echo "Nvm is already installed..."
+        return
     }
     printf "Installing nvm..."
     printf "  - cloning nvm"

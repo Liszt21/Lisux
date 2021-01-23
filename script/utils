@@ -1,0 +1,47 @@
+#!/usr/bin/env bash
+
+function y-or-n-p() {
+    # $1 message
+    # $2 default selection
+    prompt="[Y/n]"
+    $2 || {
+        prompt="[y/N]"
+    }
+    $DEBUG && {
+        echo "In function y-or-n-p(1: $1, 2: $2, prompt $prompt)"
+    }
+    if read -r -n1 -t 9 -p "$1 $prompt?" answer;then
+        case $answer in
+        Y | y)
+            return 0;;
+        N | n)
+            return 1;;
+        *)
+            echo "Wrong answer: $answer, return default: %2"
+            $2 && {
+                return 0
+            }
+            return 1;;
+        esac
+    else
+        echo "Timeout, return default: $2"
+        $2 && {
+            return 0
+        }
+        return 1
+    fi
+}
+
+function command_exists() {
+	command -v "$@" >/dev/null 2>&1
+}
+
+function in_file() {
+    # $1 text
+    # $2 file
+    grep "$1" < "$2" >/dev/null 2>&1
+}
+
+command_exists pacman && PACMAN=true
+command_exists yum && YUM=true
+command_exists apt && APT=true
