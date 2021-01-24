@@ -29,6 +29,9 @@ function install() {
     cd "$LEMACS_HOME"
     git submodule init
     git submodule update
+    [ $PACMAN ] && {
+        sudo pacman -S ripgrep fd nim xclip maim graphviz gnuplot shellcheck
+    }
     cd $OLDPWD
 }
 
