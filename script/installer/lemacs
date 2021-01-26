@@ -25,7 +25,7 @@ function install() {
     }
     printf "Installing lemacs..."
     printf "  - cloning lemacs"
-    checkout https://github.com/Liszt21/Lemacs.git "$LEMACE_HOME"
+    checkout https://github.com/Liszt21/Lemacs.git "$LEMACS_HOME"
     cd "$LEMACS_HOME"
     git submodule init
     git submodule update
@@ -37,7 +37,7 @@ function install() {
 
 function uninstall() {
     printf "Uninstalling lemacs..."
-    rm -rf "$LEMACE_HOME"
+    rm -rf "$LEMACS_HOME"
 }
 
 case "$1" in
