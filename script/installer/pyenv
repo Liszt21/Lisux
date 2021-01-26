@@ -23,6 +23,7 @@ function install() {
         echo "Pyenv is already installed..."
         return
     }
+
     printf "Installing pyenv..."
     printf "  - cloning pyenv"
     checkout https://github.com/pyenv/pyenv.git "$PYENV_ROOT"
