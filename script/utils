@@ -45,3 +45,5 @@ function in_file() {
 command_exists pacman && PACMAN=true
 command_exists yum && YUM=true
 command_exists apt && APT=true
+
+[ $USER = "liszt" ] && ISME=true

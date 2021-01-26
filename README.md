@@ -8,19 +8,19 @@ Liszt21's linux config
   - [ ] i3
     - [ ] key
     - [ ] bar
-  - [ ] zsh
+  - [x] zsh
 - [ ] application
-  - [ ] emacs
-  - [ ] pyenv
-  - [ ] nvm
-  - [ ] zsh
+  - [x] emacs
+  - [x] pyenv
+  - [x] nvm
+  - [x] zsh
 - [ ] script
-  - [ ] installer
-    - [ ] lisux
-    - [ ] pyenv
-    - [ ] nvm
-    - [ ] ohmyzsh
-    - [ ] lemacs
+  - [x] installer
+    - [x] lisux
+    - [x] pyenv
+    - [x] nvm
+    - [x] ohmyzsh
+    - [x] lemacs
 
 ## Reference
 - Derek Taylor (DistroTube) : [GitLab](http://www.gitlab.com/dwt1/)

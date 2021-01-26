@@ -29,15 +29,10 @@ function install() {
     DISTROBUTION_NAME=$(grep < /etc/os-release -e "^NAME=*" | cut -f 2 -d "\"")
     echo "Hello $USER, Lisux is running in $DISTROBUTION_NAME"
 
-    command_exists yum && 4yum
-    command_exists pacman && 4pacman
-    command_exists apt && 4apt
-
     [ "$WSL_DISTRO_NAME" ] && {
         echo "In wsl"
         [ "$USER" = "liszt" ] && [ ! -e "/mnt/c/Liszt/Projects/Lisux" ] && {
             echo "Is me"
-            # ln -s /mnt/c/Liszt/Projects/Lisux ~/.lisux
         }
     }
 
@@ -45,13 +40,15 @@ function install() {
         echo "Lisux is already installed..."
     else
         git clone https://github.com/Liszt21/Lisux "$LISUX"
-        # find "$LISUX/bin" -type f -exec chmod o+x {} \;
-        # find "$LISUX/script" -type f ! -name "*.*" -exec chmod o+x {} \;
     fi
 
     cd $LISUX
 
     source $LISUX/script/utils
+
+    command_exists yum && 4yum
+    command_exists pacman && 4pacman
+    command_exists apt && 4apt
 
     # Setting environment
     RC_FILE="$HOME/.bashrc"
