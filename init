@@ -33,6 +33,11 @@ export PATH="$LISUX/bin:$PATH"
     export PATH="$LEMACS_HOME/bin:$PATH"
 }
 
+[ -d "$LISUX/apps/roswell" ] && {
+    export ROSWELL_HOME="$LISUX/apps/roswell"
+    export PATH="$ROSWELL_HOME/bin:$PATH"
+}
+
 [ -d "$LISUX/apps/nvm" ] && {
     export NVM_DIR="$LISUX/apps/nvm"
     [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
