@@ -15,6 +15,14 @@ function install() {
         return
     }
 
+    [ $APT ] && {
+        sudo apt-get install libcurl4-openssl-dev automake -y
+    }
+
+    [ $YUM ] && {
+        sudo yum install automake libcurl-devel -y
+    }
+
     printf "Installing pyenv..."
     printf "  - cloning pyenv"
     git clone -b release https://github.com/roswell/roswell.git $LISUX/cache/roswell

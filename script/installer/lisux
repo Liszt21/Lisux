@@ -22,8 +22,8 @@ function 4yum() {
 }
 
 function 4apt() {
-    sudo apt install git vim emacs curl wget zsh python-pip neofetch -y
-    sudo apt install make build-essential libssl-dev zlib1g-dev libbz2-dev \
+    sudo apt install git vim emacs curl wget zsh python-pip neofetch \
+        make build-essential libssl-dev zlib1g-dev libbz2-dev \
         libreadline-dev libsqlite3-dev llvm libncurses5-dev libncursesw5-dev \
         xz-utils tk-dev libffi-dev liblzma-dev python-openssl -y
 }
