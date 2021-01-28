@@ -17,7 +17,6 @@ function install() {
 
     printf "Installing pyenv..."
     printf "  - cloning pyenv"
-    checkout https://github.com/pyenv/pyenv.git "$ROSWELL_HOME"
     git clone -b release https://github.com/roswell/roswell.git $LISUX/cache/roswell
     cd $LISUX/cache/roswell
     sh bootstrap
