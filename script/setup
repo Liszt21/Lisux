@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+#
+[ ! $LISUX ] && {
+    echo "Lisux isn't installed, exit..."
+    exit
+}
+
+source $LISUX/script/utils
+
+[ $PACMAN ] && {
+    echo "Setup arch base linux"
+    sudo pacman -S kcm-fcitx fcitx-rime wqy-microhei adobe-source-han-sans-cn-fonts ttf-arphic-ukai --needed
+    yay -S firefox atom visual-studio-code-bin qv2ray v2ray nutstore pcloud-drive com.qq.tim.spark com.qq.weixin.spark netease-cloud-music baidunetdisk-bin deepin.com.dingtalk.com ttf-wps-fonts wps-office --needed
+}
