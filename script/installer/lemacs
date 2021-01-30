@@ -30,7 +30,8 @@ function install() {
     git submodule init
     git submodule update
     [ $PACMAN ] && {
-        sudo pacman -S ripgrep fd nim xclip maim graphviz gnuplot shellcheck
+        sudo yay -S ttf-all-the-icon ttf-fira-code cmake -y
+        sudo pacman -S ripgrep fd nim xclip maim graphviz gnuplot shellcheck -y
     }
     cd $OLDPWD
 }
