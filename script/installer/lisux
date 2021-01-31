@@ -61,6 +61,10 @@ function install() {
         echo "source $LISUX/init" >> "$RC_FILE"
     }
 
+    y-or-n-p "Setup system?" && {
+        bash $LISUX/script/setup
+    }
+
     cd $OLDPWD
 }
 
