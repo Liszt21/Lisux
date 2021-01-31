@@ -23,8 +23,8 @@ function install() {
         echo "Lemacs was installed...exit"
         return
     }
-    printf "Installing lemacs..."
-    printf "  - cloning lemacs"
+    echo "Installing lemacs..."
+    echo "  - cloning lemacs"
     checkout https://github.com/Liszt21/Lemacs.git "$LEMACS_HOME"
     cd "$LEMACS_HOME"
     git submodule init
@@ -37,7 +37,7 @@ function install() {
 }
 
 function uninstall() {
-    printf "Uninstalling lemacs..."
+    echo "Uninstalling lemacs..."
     rm -rf "$LEMACS_HOME"
 }
 

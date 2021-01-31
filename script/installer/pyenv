@@ -24,13 +24,13 @@ function install() {
         return
     }
 
-    printf "Installing pyenv..."
-    printf "  - cloning pyenv"
+    echo "Installing pyenv..."
+    echo "  - cloning pyenv"
     checkout https://github.com/pyenv/pyenv.git "$PYENV_ROOT"
 }
 
 function uninstall() {
-    printf "Uninstalling pyenv..."
+    echo "Uninstalling pyenv..."
     rm -rf "$PYENV_ROOT"
 }
 

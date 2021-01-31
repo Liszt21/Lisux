@@ -23,8 +23,8 @@ function install() {
         sudo yum install automake libcurl-devel -y
     }
 
-    printf "Installing pyenv..."
-    printf "  - cloning pyenv"
+    echo "Installing roswell..."
+    echo "  - cloning roswell"
     git clone -b release https://github.com/roswell/roswell.git $LISUX/cache/roswell
     cd $LISUX/cache/roswell
     sh bootstrap
@@ -36,7 +36,7 @@ function install() {
 }
 
 function uninstall() {
-    printf "Uninstalling pyenv..."
+    echo "Uninstalling roswell..."
     rm -rf "$ROSWELL_HOME"
 }
 

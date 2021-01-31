@@ -12,13 +12,13 @@ function install() {
         echo "Nvm is already installed..."
         return
     }
-    printf "Installing nvm..."
-    printf "  - cloning nvm"
+    echo "Installing nvm..."
+    echo "  - cloning nvm"
     git clone https://gitee.com/mirrors/nvm.git $NVM_DIR
 }
 
 function uninstall() {
-    printf "Uninstalling pyenv..."
+    echo "Uninstalling pyenv..."
     rm -rf "$NVM_DIR"
 }
 
