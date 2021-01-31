@@ -42,8 +42,27 @@ function in_file() {
     grep "$1" < "$2" >/dev/null 2>&1
 }
 
+function ln-and-backup() {
+    [ -e $2 ] && {
+        echo "backup $2"
+        mv $2 "$2.bak"
+    }
+    ln -s $1 $2
+}
+
+function rm-if-exist() {
+    [ -e $1 ] && {
+        rm -rf $1
+    }
+}
+
 command_exists pacman && PACMAN=true
 command_exists yum && YUM=true
 command_exists apt && APT=true
 
 [ $USER = "liszt" ] && ISME=true
+
+[ $DEBUG ] && {
+    ln-and-backup "$HOME/Temp/test" "$HOME/Temp/temp"
+    rm-if-exist "$HOME/Temp/temp.bak"
+}

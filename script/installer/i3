@@ -1,0 +1,38 @@
+#!/usr/bin/env bash
+
+[ ! $LISUX ] && {
+    echo "Lisux isn't installed, exit..."
+    exit
+}
+
+source $LISUX/script/utils
+
+function install() {
+    echo "Install i3"
+    
+    command_exists i3 || {
+        [ $PACMAN ] && {
+            yay -S i3 --needed
+        }
+    }
+    ln-and-backup "$LISUX/config/i3" "$HOME/.config/i3"
+    ln-and-backup "$LISUX/config/i3block" "$HOME/.config/i3block"
+    ln-and-backup "$LISUX/config/polybar" "$HOME/.config/polybar"
+}
+
+function uninstall() {
+    echo "Uninstall i3"
+    rm-if-exist "$HOME/.config/i3"
+    rm-if-exist "$HOME/.config/i3block"
+    rm-if-exist "$HOME/.config/polybar"
+    
+}
+
+case "$1" in
+    [u/U]ninstall )
+        uninstall
+        ;;
+    * )
+        install
+        ;;
+esac
