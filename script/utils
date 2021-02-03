@@ -56,9 +56,10 @@ function rm-if-exist() {
     }
 }
 
-command_exists pacman && PACMAN=true
-command_exists yum && YUM=true
-command_exists apt && APT=true
+command-exists pacman && PACMAN=true
+command-exists yum && YUM=true
+command-exists apt && APT=true
+command-exists apk && APK=true
 
 [ $USER = "liszt" ] && ISME=true
 

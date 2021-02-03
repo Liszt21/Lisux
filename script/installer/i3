@@ -10,7 +10,7 @@ source $LISUX/script/utils
 function install() {
     echo "Install i3"
     
-    command_exists i3 || {
+    command-exists i3 || {
         [ $PACMAN ] && {
             yay -S i3 --needed
         }
