@@ -32,11 +32,11 @@ function y-or-n-p() {
     fi
 }
 
-function command_exists() {
+function command-exists() {
 	command -v "$@" >/dev/null 2>&1
 }
 
-function in_file() {
+function text-in-file() {
     # $1 text
     # $2 file
     grep "$1" < "$2" >/dev/null 2>&1

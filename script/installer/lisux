@@ -7,7 +7,7 @@ LISUX=${LISUX:-~/.lisux}
 export LISUX=$LISUX
 
 function 4pacman() {
-    in_file "archlinuxcn" /etc/pacman.conf || {
+    text-in-file "archlinuxcn" /etc/pacman.conf || {
         echo "  - add archlinuxcn server"
         printf "[archlinuxcn]\nServer = https://mirrors.163.com/archlinux-cn/\$arch" | sudo tee -a /etc/pacman.conf
         sudo pacman -Sy
@@ -49,14 +49,14 @@ function install() {
 
     source $LISUX/script/utils
 
-    command_exists yum && 4yum
-    command_exists pacman && 4pacman
-    command_exists apt && 4apt
+    command-exists yum && 4yum
+    command-exists pacman && 4pacman
+    command-exists apt && 4apt
 
     # Setting environment
     RC_FILE="$HOME/.bashrc"
 
-    in_file "lisux/init" "$RC_FILE" || {
+    text-in-file "lisux/init" "$RC_FILE" || {
         echo "  - push init file to $RC_FILE"
         echo "source $LISUX/init" >> "$RC_FILE"
     }
