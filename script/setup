@@ -12,5 +12,5 @@ source $LISUX/script/utils
     sudo pacman -S kcm-fcitx fcitx-rime wqy-microhei adobe-source-han-sans-cn-fonts ttf-arphic-ukai --needed
     yay -S firefox atom visual-studio-code-bin qv2ray v2ray nutstore pcloud-drive com.qq.tim.spark com.qq.weixin.spark netease-cloud-music baidunetdisk-bin deepin.com.dingtalk.com ttf-wps-fonts wps-office --needed
 
-    cp $LISUX/config/pam_environment $HOME/.pam_envvironment
+    cp $LISUX/config/pam_environment $HOME/.pam_environment
 }
