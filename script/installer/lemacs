@@ -19,6 +19,9 @@ checkout() {
 }
 
 function install() {
+    [ $PACMAN ] && {
+        yay -S ttf-all-the-icons ttf-fira-code cmake ripgrep fd nim xclip maim graphviz gnuplot shellcheck --needed
+    }
     [ -d $LEMACS_HOME ] && {
         echo "Lemacs was installed...exit"
         return
@@ -29,9 +32,6 @@ function install() {
     cd "$LEMACS_HOME"
     git submodule init
     git submodule update
-    [ $PACMAN ] && {
-        yay -S ttf-all-the-icon ttf-fira-code cmake ripgrep fd nim xclip maim graphviz gnuplot shellcheck -y
-    }
     cd $OLDPWD
 }
 
