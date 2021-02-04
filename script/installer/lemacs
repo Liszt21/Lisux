@@ -32,7 +32,13 @@ function install() {
     cd "$LEMACS_HOME"
     git submodule init
     git submodule update
-    cd $OLDPWD
+    git submodule foreach git checkout master
+    PREPWD=$OLDPWD
+    cd $LEMACS_HOME/config/doomemacs
+    git chechout develop
+    cd $LEMACS_HOME/config/spacemacs
+    git checkout develop
+    cd $PREPWD
 }
 
 function uninstall() {

@@ -61,8 +61,17 @@ function install() {
         echo "source $LISUX/init" >> "$RC_FILE"
     }
 
-    y-or-n-p "Setup system?" && {
+    [ $ISME ] && {
         bash $LISUX/script/setup
+        lisux install all
+        pyenv install 3.7.7
+        pyenv global 3.7.7
+        pip install -r $LISUX/config/requirement.txt
+        nvm install --lts
+
+        git config --global user.name Liszt21
+        git config --global user.email 1832666492@qq.com
+        git config --global credential.helper store
     }
 
     cd $OLDPWD
