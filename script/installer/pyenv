@@ -27,6 +27,20 @@ function install() {
     echo "Installing pyenv..."
     echo "  - cloning pyenv"
     checkout https://github.com/pyenv/pyenv.git "$PYENV_ROOT"
+
+    if [ -e "$HOME/.pip" ];then
+        [ -d "$HOME/.pip" ] && {
+            y-or-n-p "overwrite .pip config" && {
+                rm -rf "$HOME/.pip"
+            }
+        }
+        [ -L "HOME/.pip" ] && {
+            rm "$HOME/.pip"
+        }
+    fi
+    [ -e "$HOME/.pip" ] || {
+        ln -s "$LISUX/config/pip" "$HOME/.pip"
+    }
 }
 
 function uninstall() {
