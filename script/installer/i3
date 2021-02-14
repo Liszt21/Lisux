@@ -12,7 +12,7 @@ function install() {
     
     command-exists i3 || {
         [ $PACMAN ] && {
-            yay -S i3 --needed
+            yay -S i3 feh picom --needed
         }
     }
     ln-and-backup "$LISUX/config/i3" "$HOME/.config/i3"

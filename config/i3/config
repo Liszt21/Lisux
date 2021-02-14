@@ -116,5 +116,5 @@ mode "resize" {
 bindsym $win+r mode "resize"
 
 exec fcitx
-exec_always --no-startup-id feh --randomize --bg-fill ~/Pictures/*
+exec_always --no-startup-id feh --randomize --bg-fill ~/.config/wallpaper/*
 exec_always --no-startup-id picom
