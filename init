@@ -50,3 +50,15 @@ export PATH="$LISUX/bin:$PATH"
     export LIBGL_ALWAYS_INDIRECT=1
     export DISPLAY=$WIN_HOST:0
 }
+
+if [ $WIN_HOST ];then
+    export http_proxy=http://$WIN_HOST:1081
+    export https_proxy=http://$WIN_HOST:1081
+    git config --global http.proxy $WIN_HOST:1081
+    git config --global https.proxy $WIN_HOST:1081
+else
+    export http_proxy=http://localhost:1081
+    export https_proxy=http://localhost:1081
+    git config --global http.proxy localhost:1081
+    git config --global https.proxy localhost:1081
+fi
