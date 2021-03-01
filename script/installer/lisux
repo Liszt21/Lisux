@@ -1,8 +1,5 @@
 #!/usr/bin/env bash
 
-# TODO: add wsl support
-# TODO: support debug mode
-# TODO: finish basic installition
 LISUX=${LISUX:-~/.lisux}
 export LISUX=$LISUX
 
@@ -62,11 +59,21 @@ function install() {
     }
 
     [ $ISME ] && {
+        source $LISUX/init
+        y-or-n-p "Use proxy?" && {
+            if [ $WIN_HOST ];then
+                export http_proxy=http://$WIN_HOST:1081
+                export https_proxy=http://$WIN_HOST:1081
+            else
+                export http_proxy=http://localhost:1081
+                export https_proxy=http://localhost:1081
+            fi
+        }
         bash $LISUX/script/setup
         lisux install all
         pyenv install 3.7.7
         pyenv global 3.7.7
-        pip install -r $LISUX/config/requirement.txt
+        pip install -r $LISUX/config/requirements.txt
         nvm install --lts
 
         git config --global user.name Liszt21

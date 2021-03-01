@@ -50,5 +50,3 @@ export PATH="$LISUX/bin:$PATH"
     export LIBGL_ALWAYS_INDIRECT=1
     export DISPLAY=$WIN_HOST:0
 }
-
-neofetch
