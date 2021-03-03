@@ -4,6 +4,25 @@ LISUX=${LISUX:-~/.lisux}
 export LISUX=$LISUX
 export PATH="$LISUX/bin:$PATH"
 
+[ "$WSL_DISTRO_NAME" ] && {
+    WIN_HOST=$(ip route | awk '{print $3; exit}')
+    export WIN_HOST=$WIN_HOST
+    export LIBGL_ALWAYS_INDIRECT=1
+    export DISPLAY=$WIN_HOST:0
+}
+
+if [ $WIN_HOST ];then
+    export http_proxy=http://$WIN_HOST:1081
+    export https_proxy=http://$WIN_HOST:1081
+    git config --global http.proxy $WIN_HOST:1081
+    git config --global https.proxy $WIN_HOST:1081
+else
+    export http_proxy=http://localhost:1081
+    export https_proxy=http://localhost:1081
+    git config --global http.proxy localhost:1081
+    git config --global https.proxy localhost:1081
+fi
+
 [ -d "$LISUX/apps/ohmyzsh" ] && [ $ZSH_VERSION ] && {
     export ZSH="$HOME/.lisux/apps/ohmyzsh"
 
@@ -44,21 +63,3 @@ export PATH="$LISUX/bin:$PATH"
     [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
 }
 
-[ "$WSL_DISTRO_NAME" ] && {
-    WIN_HOST=$(ip route | awk '{print $3; exit}')
-    export WIN_HOST=$WIN_HOST
-    export LIBGL_ALWAYS_INDIRECT=1
-    export DISPLAY=$WIN_HOST:0
-}
-
-if [ $WIN_HOST ];then
-    export http_proxy=http://$WIN_HOST:1081
-    export https_proxy=http://$WIN_HOST:1081
-    git config --global http.proxy $WIN_HOST:1081
-    git config --global https.proxy $WIN_HOST:1081
-else
-    export http_proxy=http://localhost:1081
-    export https_proxy=http://localhost:1081
-    git config --global http.proxy localhost:1081
-    git config --global https.proxy localhost:1081
-fi
