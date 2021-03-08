@@ -1,16 +1,35 @@
 #!/usr/bin/env python
 
 import socket
+import json
 import time
 import requests
+import base64
 from pathlib import Path
 
 HOME = Path(__file__).resolve().parent.parent / "apps" / "v2sub"
 
-def get_servers(uri, cache=True):
+def get_servers(uris,force=True):
     cache = HOME / "servers.json"
-    if cache.exists() and time.time() - cache.stat().st_mtime < 36000:
-        pass
+    if force or not cache.exists() or time.time() - cache.stat().st_mtime > 36000:
+        configs = []
+        for uri in uris:
+            r = requests.get(uri)
+            links =  base64.b64decode(r.text).decode("ascii").split("\n")
+            supported_protocols = [ 'vmess' ]
+            for link in links:
+                try:
+                    protocol, config  = link.split("//")
+                    if protocol not in supported_protocols:
+                        break
+                    configs.append(json.loads(base64.b64decode(config)))
+                except Exception as error:
+                    print(error)
+        with open(cache, 'w') as f:
+            json.dump(configs, f)
+    else:
+        with open(cache, 'r') as f:
+            configs = json.load(f)
     
 
 def get_uris():
