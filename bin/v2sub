@@ -1,0 +1,34 @@
+#!/usr/bin/env python
+
+import socket
+import time
+import requests
+from pathlib import Path
+
+HOME = Path(__file__).resolve().parent.parent / "apps" / "v2sub"
+
+def get_servers(uri, cache=True):
+    cache = HOME / "servers.json"
+    if cache.exists() and time.time() - cache.stat().st_mtime < 36000:
+        pass
+    
+
+def get_uris():
+    fp = HOME / "subscribes.txt"
+    if not fp.exists():
+        fp.parent.mkdir(parents=True, exist_ok=True)
+        with open(fp, "w") as f:
+            uri = input("please input your subscribe uri...\n")
+            f.write(uri + "\n")
+    with open(fp, 'r') as f:
+        uris = [uri.strip() for uri in f.readlines()]
+    return uris 
+
+class V2sub():
+    def __init__(self):
+        pass
+
+
+if __name__ == "__main__":
+    for uri in get_uris():
+        get_servers(uri)
