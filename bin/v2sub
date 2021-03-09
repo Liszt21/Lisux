@@ -5,32 +5,90 @@ import json
 import time
 import requests
 import base64
+import logging
 from pathlib import Path
+import fire
 
 HOME = Path(__file__).resolve().parent.parent / "apps" / "v2sub"
 
-def get_servers(uris,force=True):
+v2ray = {
+  "inbounds": [{
+    "port": 10800,  # SOCKS 代理端口，在浏览器中需配置代理并指向这个端口
+    "listen": "127.0.0.1",
+    "protocol": "socks",
+    "settings": {
+      "udp": True
+    }
+  },
+  {
+    "port": 10801,  # SOCKS 代理端口，在浏览器中需配置代理并指向这个端口
+    "listen": "127.0.0.1",
+    "protocol": "http",
+    "settings": {
+      "udp": True
+    }
+  }],
+  "outbounds": [{
+    "protocol": "freedom",
+    "tag": "direct",
+    "settings": {}
+  }],
+  "routing": {
+    "domainStrategy": "IPOnDemand",
+    "rules": [{
+      "type": "field",
+      "ip": ["geoip:private"],
+      "outboundTag": "direct"
+    }]
+  }
+}
+
+
+def tcping(ip, port, timeout=2):
+    sk = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    sk.settimeout(timeout)
+    try:
+        t1 = time.time()
+        sk.connect((ip, port))
+        t2 = time.time()
+        sk.close()
+        return True, int(round((t2-t1)*1000))
+    except Exception as err:
+        sk.close()
+        logging.debug(err)
+        return False, timeout*1000
+
+
+def get_servers(uris, force=False):
     cache = HOME / "servers.json"
-    if force or not cache.exists() or time.time() - cache.stat().st_mtime > 36000:
-        configs = []
+    if force or not cache.exists() or time.time() - cache.stat().st_mtime > 3600:
+        servers = []
         for uri in uris:
+            logging.info("Request {}".format(uri))
             r = requests.get(uri)
-            links =  base64.b64decode(r.text).decode("ascii").split("\n")
-            supported_protocols = [ 'vmess' ]
+            links = base64.b64decode(r.text).decode("ascii").split("\n")
+            supported_protocols = ['vmess']
             for link in links:
                 try:
-                    protocol, config  = link.split("//")
+                    protocol, server= link.split("://")
                     if protocol not in supported_protocols:
-                        break
-                    configs.append(json.loads(base64.b64decode(config)))
+                        logging.debug("{} not support".format(protocol))
+                    server = json.loads(base64.b64decode(server))
+                    server['protocol'] = protocol
+                    if tcping(server['add'], server['port'])[0]:
+                        servers.append(server)
                 except Exception as error:
                     print(error)
         with open(cache, 'w') as f:
-            json.dump(configs, f)
+            json.dump(servers, f)
     else:
+        logging.info("Loading servers from cache")
         with open(cache, 'r') as f:
-            configs = json.load(f)
-    
+            servers = json.load(f)
+    for s in servers:
+        s['delay'] = tcping(s['add'], int(s['port']))[1]
+    return servers
+
 
 def get_uris():
     fp = HOME / "subscribes.txt"
@@ -41,13 +99,61 @@ def get_uris():
             f.write(uri + "\n")
     with open(fp, 'r') as f:
         uris = [uri.strip() for uri in f.readlines()]
-    return uris 
+    return uris
 
-class V2sub():
-    def __init__(self):
-        pass
+
+def restruct(servers, with_freedom=True):
+    outbounds = []
+    for server in servers:
+        if server['protocol'] == "vmess":
+            settings = {
+                "vnext": [{
+                    "address": server["add"],
+                    "port": server['port'],
+                    "users": [{
+                        "id": server["id"],
+                        "alterId": server["aid"],
+                        "security": "auto",
+                        "level": 0
+                    }]
+                }]
+            }
+            streamSettings = {
+                "network": server["net"],
+                "security": server["type"],
+                "tag": server["ps"]
+            }
+            if server['net'] == "ws":
+                streamSettings["wsSettings"] = {
+                    "path": server['path'],
+                    "host": server['host']
+                }
+        outbound = {
+            "protocol": server["protocol"],
+            "settings": settings,
+            "streamSettings": streamSettings
+        }
+        outbounds.append(outbound)
+    if with_freedom:
+        outbounds.append({
+            "protocol": "freedom",
+            "tag": "direct",
+            "settings": {}
+        })
+    return outbounds
+
+
+def v2sub():
+    uris = get_uris()
+    servers = get_servers(uris)
+    sorted(servers, key=lambda s: s['delay'])
+    outbounds = restruct(servers[:9])
+    v2ray["outbounds"] = outbounds
+    with open(HOME / "config.json", 'w') as f:
+        json.dump(v2ray, f)
+
 
 
 if __name__ == "__main__":
-    for uri in get_uris():
-        get_servers(uri)
+    logging.basicConfig(level=logging.DEBUG)
+    fire.Fire(v2sub)
