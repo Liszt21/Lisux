@@ -1,4 +1,5 @@
-wakatime
 fire
+wakatime
+requests
 jupyterlab
 
