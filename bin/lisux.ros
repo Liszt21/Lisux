@@ -1,0 +1,20 @@
+#!/bin/sh
+#|-*- mode:lisp -*-|#
+#|
+exec ros -Q -- $0 "$@"
+|#
+(progn ;;init forms
+  (ros:ensure-asdf)
+  #+quicklisp(ql:quickload '() :silent t))
+  
+
+(defpackage :ros.script.lisux.3825112421
+  (:use :cl))
+(in-package :ros.script.lisux.3825112421)
+
+(load "../src/lisux.lisp")
+
+(defun main (&rest argv)
+  (declare (ignorable argv))
+  (lisux:main))
+;;; vim: set ft=lisp lisp:

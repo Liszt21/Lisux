@@ -2,11 +2,14 @@
 
 (defpackage :lisux
   (:use :common-lisp)
-  (:import-from :base
-                :sh)
+  (:import-from :uiop
+                #:run-program
+                #:getenv)
+  ;; (:import-from :base
+  ;;               :sh)
   (:export :main))
 
 (in-package :lisux)
 
 (defun main ()
-  (print "Hello Lisux!"))
+  (format t "Hello ~A!" (getenv "USER")))
