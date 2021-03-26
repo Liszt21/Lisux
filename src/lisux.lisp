@@ -1,7 +1,7 @@
 (in-package :cl-user)
 
 (defpackage :lisux
-  (:use :common-lisp)
+  (:use :common-lisp :base)
   (:import-from :uiop
                 #:run-program
                 #:getenv)
